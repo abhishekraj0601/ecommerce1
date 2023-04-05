@@ -33,7 +33,7 @@
               <a href="/cart/<%=product._id%>" class="w-50 "> <button class="btn text-white <%=user.cart.indexOf(product._id) == -1 ? 'btn-warning' :'btn-danger' %> w-100  p-3"><i class="fa-solid fa-cart-plus"></i> <%=user.cart.indexOf(product._id) == -1 ? 'ADD TO CART' :'REMOVE FROM CART' %></button></a>
               <button class="btn btn-primary add-btn w-50 p-3"> <i class="fa-solid fa-bolt-lightning"></i> BUY NOW</button>
             <% }else{ %>
-              <a href="/cart/<%=product._id%>" class="w-50"> <button class="btn btn-warning w-100  p-3"><i class="fa-solid fa-cart-plus"></i> ADD TO CART</button></a>
+              <a href="/cart/<%=product._id%>" class="w-50"> <button class="btn text-white btn-warning w-100  p-3"><i class="fa-solid fa-cart-plus"></i> ADD TO CART</button></a>
               <a href="/buy" class="w-50"><button class="btn btn-primary  w-100 p-3"> <i class="fa-solid fa-bolt-lightning"></i> BUY NOW</button></a>
             <% } %>
             </div>
@@ -61,7 +61,7 @@
             <div style="position: relative; border-radius: 10px;" class="bg-light review border d-flex gap-4 mt-2 px-1 align-items-center">
               <img src="../images/uploads/<%=elem.userid[0].photo%>" style="width: 50px; height: 50px; border-radius: 50%; " class="p-1 border" alt="">
               <div>
-                <strong class="m-0"><%=elem.userid[0].firstname%> <%=elem.userid[0].lastname%></strong>
+                <strong class="m-0"><%=elem.userid[0].fullname%> </strong>
                 <p class="m-0"><%=elem.review%></p>
                 <small class="text-muted m-0 " style="font-size: 12px;"><%=elem.createdAt%></small>
               </div>
@@ -83,8 +83,8 @@
 
 </section>
 
-<section id="proaddress" style=" width: 100vw; z-index: 9999;  min-height: 100vh; display: none; align-items: center; justify-content: center; position: fixed; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.45);">
-  <div style=" width: 70%; position: relative; background: white; border-radius: 10px;" class="p-4">
+<section id="proaddress" style="overflow: auto; width: 100vw; z-index: 9999;  min-height: 100vh; display: none; align-items: center; justify-content: center; position: fixed; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.45);">
+  <div style=" width: 70%; position: relative; background: white; border-radius: 10px;" class="p-4 proaddress">
     <h5 class="text-center">delivery address</h5>
 <% if(user){%>
     <form action="/buy/<%=product._id%>" method="post" id="myForm" class="d-flex flex-wrap mt-4 gap-3">

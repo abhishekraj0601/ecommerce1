@@ -36,15 +36,15 @@
                         <label for="show password"> show password</label>
                     </div>
 
-                   <div style="display: flex; justify-content: space-between;">
-                    <button class="mt-4">Reset Password</button>
-                    <button type="button"  class="mt-4 otp-resend" style="background: none; color: green;">resend otp <hr style="opacity: 1; margin: 0;"></button>
+                   <div style=" display: flex;  align-items: center; flex-wrap: wrap; " class="gap-3 mt-3" >
+                    <button class="mx-auto" >Reset Password</button>
+                    <button type="button"  class="mx-auto otp-resend" style="background: none; color: green; ">RESEND OTP<hr style="opacity: 1; margin: 0; font-weight: 500;"></button>
                    </div>
                 </form>
                 <!-- <small >otp expire in <span class="date"></span></small> -->
             </div>
         </div>
-       <input type="text" name="" id="ema" value="<%=user.username%>" style="display: none;">
+       <input type="text" name="" id="ema" value="<%=user._id%>" style="display: none;">
     </section>
 
 <script>

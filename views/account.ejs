@@ -104,11 +104,17 @@
             </div>
             <div class="form-goup  mt-5">
                 <div class="d-flex flex-column gap-3">
-                    <label for="name">email adress</label>
-                     <input type="text" name="email" id="usernum" value="<%=user.username%>">
+                    <label for="name">username</label>
+                     <input type="text" name="username" id="usernum" value="<%=user.username%>">
                 </div>
                 <small class="mx-3 m-0 username-suggestion" style="position: absolute; font-size: 11px;display: none;">asdf</small>
 
+            </div>
+            <div class="form-goup d-flex flex-column gap-3 mt-5">
+                <label for="name">Email</label>
+       
+                <input type="email" placeholder="Enter mobile number" name="email" id="" value="<%=user.email%>">
+        
             </div>
             <div class="form-goup d-flex flex-column gap-3 mt-5">
                 <label for="name">mobile number</label>

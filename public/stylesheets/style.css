@@ -422,7 +422,7 @@ display: none;
   border: none;
   border-bottom: 1px solid;
   outline: none;
-  width: 400px;
+ width: 300px;
 }
 .reviews .reviewtext:not(:placeholder-shown) +
 .reviewbtn{
@@ -456,12 +456,13 @@ display: none;
 }
 #preloder strong{
   color: white;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
+  font-weight: 500;
   animation: glow 1s alternate infinite;
 }
 @keyframes glow {
   0%{
-    opacity: .5;
+    opacity: .1;
   }
   100%{
     opacity: 1;

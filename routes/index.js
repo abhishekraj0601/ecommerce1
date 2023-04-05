@@ -91,7 +91,7 @@ router.get('/', function(req, res, next) {
 
 
 router.get("/check/:username",async function(req,res){
- var user = await userModel.findOne({username:req.params.username})
+ var user = await userModel.findOne({$or:[{"email":req.params.username},{"mobilenumber":req.params.username}]})
 res.json(user)
 })
 
@@ -365,7 +365,7 @@ router.post("/updatephoto",upload.single('filename'),function(req,res){
 })
 
 router.post("/updateuser",isLoggedin,function(req,res){
-  userModel.findOneAndUpdate({username:req.session.passport.user},{fullname:req.body.fullname  , username:req.body.email , mobilenumber:req.body.number , gender:req.body.gender}).then(function(){
+  userModel.findOneAndUpdate({username:req.session.passport.user},{fullname:req.body.fullname ,username:req.body.username , email:req.body.email , mobilenumber:req.body.number , gender:req.body.gender}).then(function(){
     res.redirect("back")
   })
 })
@@ -397,14 +397,14 @@ router.post("/changepassword",function(req,res){
 })
 
 router.post("/forget",async function(req,res){
-  var user = await userModel.findOne({username:req.body.username})
+  var user = await userModel.findOne({$or:[{"mobilenumber":req.body.email},{"email":req.body.email}]})
   if(user){
     var x =Math.random().toString().substr(2, 6); //6digit otp
     user.otp = x;
     user.expiringtime = Date.now() + 300000;  //5mint
     await user.save()
     // --------nodemailer file
-    var email = user.username;
+    var email = user.email;
     var subject = "password change request"
     var html = ` <p>  Please fill the following otp to reset your password.</p><h2> ${x} </h2>
     this link is valid only for 5 minuts.
@@ -438,15 +438,15 @@ router.post("/forget/:id",async function(req,res){
    }
   }
 })
-router.get("/resendotp/:username",async function(req,res) {
-  var user = await userModel.findOne({username:req.params.username})
+router.get("/resendotp/:userid",async function(req,res) {
+  var user = await userModel.findOne({_id:req.params.userid})
  
     var x =Math.random().toString().substr(2, 6); //6digit otp
     user.otp = x;
     user.expiringtime = Date.now() + 300000;  //5mint
     await user.save()
     // --------nodemailer file
-    var email = user.username;
+    var email = user.email;
     var html = ` <p>  Please fill the following otp to reset your password.</p><h2> ${x} </h2>
     this link is valid only for 5 minuts.
     If you did not request this, please ignore this email and your password will remain unchanged `;
@@ -466,6 +466,7 @@ router.post("/register",async function(req,res){
   }else{
  var data = new userModel({
     username:req.body.username,
+    email:req.body.email,
     fullname:req.body.fullname,
   })
   if (!req.body.password) {
@@ -511,11 +512,12 @@ router.get('/logout', function(req, res, next){
 
 router.get("/delete/:userid",async function(req,res){
  var review = await reviewModel.deleteMany({userid:req.params.userid})
+ var order = await orderModel.deleteMany({userid:req.params.userid})
  var user =await userModel.findOneAndDelete({username:req.session.passport.user})
  res.redirect("back")
 })
 
-router.get("/deleteorder/:id",function(req,res){
+router.get("/deleteorder/:id", function(req,res){
  userModel.findOne({username:req.session.passport.user}).then(function(loginuser){
   orderModel.findOneAndDelete({_id:req.params.id}).then(function(user){
     loginuser.buyed.splice(loginuser.buyed.indexOf(req.params.id),1)
@@ -531,6 +533,7 @@ router.get("/deleteorder/:id",function(req,res){
   })
  })
 })
+
 router.get("/reviewdelete/:productid/:id",async function(req,res){
   var user = await userModel.findOne({username:req.session.passport.user})
  var review = await reviewModel.findOneAndDelete({_id:req.params.id})
@@ -542,10 +545,13 @@ await product.save()
 await user.save()
 res.redirect("back")
 })
-router.get("/productdelete/:id",function(req,res){
-  productModel.findOneAndDelete({_id:req.params.id}).then(function(){
-    res.redirect("back")
-  })
+router.get("/productdelete/:id",async function(req,res){
+  var order = await orderModel.find({productid:req.params.id})
+  var user = await userModel.find({buyed:order._id})
+ 
+  await orderModel.deleteMany({productid:req.params.id})
+  await productModel.findOneAndDelete({_id:req.params.id})
+  res.redirect("back")
 })
 
 router.get("/addressdelete/:indexof",isLoggedin,function(req,res){
